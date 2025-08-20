@@ -7,7 +7,7 @@ import uuid
 
 
 # Configuration for ChromaDB
-load_dotenv()
+load_dotenv(override=True)
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 CHROMA_DIR = os.getenv("CHROMA_DIR", ".chroma_db")
 EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "text-embedding-3-small")
@@ -68,13 +68,12 @@ def create_embeddings(input_text):
     return [d.embedding for d in embedding_response.data]
 
 
-def load_book_summaries():
+def load_book_summaries(collection):
     items = parse_book_summaries(BOOKS_FILE)
     if not items:
         print(f"No book summaries parsed from {BOOKS_FILE}.")
         return
 
-    global collection
     if collection.count():
         chroma.delete_collection("books")
         collection = chroma_client.get_or_create_collection(
@@ -96,7 +95,6 @@ def load_book_summaries():
 
     print(f"Loaded {len(items)} book summaries into ChromaDB collection 'books'.")
 
-if __name__ == "__main__":
-    # load_book_summaries()
 
-    print(OpenAI().models.list())
+if __name__ == "__main__":
+    load_book_summaries(collection)
