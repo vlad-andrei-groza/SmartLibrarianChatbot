@@ -4,7 +4,7 @@ import os
 from openai import OpenAI
 
 
-load_dotenv()
+load_dotenv(override=True)
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 CHROMA_DIR = os.getenv("CHROMA_DIR", ".chroma_db")
 EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "text-embedding-3-small")
@@ -35,8 +35,10 @@ def search_by_context(query: str, k: int = 5):
     results.sort(key=lambda x: x["score"], reverse=True)
     return results
 
+
 if __name__ == "__main__":
-    for query in ["friendship and fantasy", "war story", "post-apocalyptic hope"]:
-        print(f"\nQuery: {query}")
-        for book in search_by_context(query, k=3):
-            print(f"  -> {book['title']} (score={book['score']:.3f})")
+    # quick manual test
+    for q in ["friendship and fantasy", "war story", "post-apocalyptic hope"]:
+        print(f"\nQuery: {q}")
+        for hit in search_by_context(q, k=3):
+            print(f"  -> {hit['title']} (score={hit['score']:.3f})")

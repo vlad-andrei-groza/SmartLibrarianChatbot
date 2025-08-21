@@ -75,7 +75,7 @@ def load_book_summaries(collection):
         return
 
     if collection.count():
-        chroma.delete_collection("books")
+        chroma_client.delete_collection("books")
         collection = chroma_client.get_or_create_collection(
             name="books",
             metadata={"hnsw:space": "cosine"}
