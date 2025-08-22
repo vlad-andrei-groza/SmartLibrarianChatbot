@@ -48,44 +48,38 @@ def parse_book_summaries(file_path):
 
 def create_embeddings(input_text):
     """
-    Create embeddings for the input text using OpenAI's embedding model
-    :param input_text: the text to be embedded
-    :return: the list of embeddings
+    Uses OpenAI to create embeddings for a list of texts.
+    :param input_text: list of strings
+    :return: list of embeddings
     """
-    embedding_response = openai_client.embeddings.create(
-        model=EMBEDDING_MODEL,
+    response = openai_client.embeddings.create(
         input=input_text,
+        model=EMBEDDING_MODEL
     )
-    return [d.embedding for d in embedding_response.data]
+    return [e.embedding for e in response.data]
 
 
-def load_book_summaries(collection):
-    items = parse_book_summaries(BOOKS_FILE)
-    if not items:
-        print(f"No book summaries parsed from {BOOKS_FILE}.")
-        return
-
-    if collection.count():
-        chroma_client.delete_collection("books")
-        collection = chroma_client.get_or_create_collection(
-            name="books",
-            metadata={"hnsw:space": "cosine"}
-        )
-
-    ids = [str(uuid.uuid5(uuid.NAMESPACE_DNS, it['title'])) for it in items]
-    texts = [it['summary'] for it in items]
-    metadatas = [{"title": it['title']} for it in items]
-
-    embeddings = create_embeddings(texts)
-    collection.add(
+def load_books_to_chromadb():
+    docs = parse_book_summaries(BOOKS_FILE)
+    summaries = [doc["summary"] for doc in docs]
+    titles = [doc["title"] for doc in docs]
+    ids = [str(uuid.uuid4()) for _ in docs]
+    embeddings = create_embeddings(summaries)
+    collection.upsert(
         ids=ids,
-        documents=texts,
         embeddings=embeddings,
-        metadatas=metadatas
+        documents=summaries,
+        metadatas=[{"title": t} for t in titles]
     )
+    return ids
 
-    print(f"Loaded {len(items)} book summaries into ChromaDB collection 'books'.")
 
+def get_retriever():
+    """
+    Returns a retriever object for semantic search.
+    """
+    return collection.as_retriever()
 
+# If run as script, load books
 if __name__ == "__main__":
-    load_book_summaries(collection)
+    load_books_to_chromadb()
