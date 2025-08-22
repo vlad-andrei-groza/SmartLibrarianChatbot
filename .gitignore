@@ -8,6 +8,7 @@ __pycache__/
 instance/
 .env
 .env.*
+.chroma_db
 
 node_modules/
 dist/
