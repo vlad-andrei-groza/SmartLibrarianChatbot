@@ -19,7 +19,7 @@ def embed(q: str):
     return openai_client.embeddings.create(model=EMBEDDING_MODEL, input=q).data[0].embedding
 
 
-def search_by_context(query: str, k: int = 5):
+def search_by_context(query: str, k: int = 3):
     """Return top-k matches with titles + snippets by semantic similarity."""
     query_embed = embed(query)
     res = collection.query(query_embeddings=[query_embed], n_results=k)
