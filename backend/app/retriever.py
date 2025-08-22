@@ -1,14 +1,6 @@
 import chromadb
-from dotenv import load_dotenv
-import os
+from config import OPENAI_API_KEY, CHROMA_DIR, EMBEDDING_MODEL
 from openai import OpenAI
-
-
-load_dotenv(override=True)
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-CHROMA_DIR = os.getenv("CHROMA_DIR", ".chroma_db")
-EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "text-embedding-3-small")
-
 
 openai_client = OpenAI(api_key=OPENAI_API_KEY)
 chroma_client = chromadb.PersistentClient(path=CHROMA_DIR)
@@ -40,5 +32,5 @@ if __name__ == "__main__":
     # quick manual test
     for q in ["friendship and fantasy", "war story", "post-apocalyptic hope"]:
         print(f"\nQuery: {q}")
-        for hit in search_by_context(q, k=3):
+        for hit in search_by_context(q, k=2):
             print(f"  -> {hit['title']} (score={hit['score']:.3f})")

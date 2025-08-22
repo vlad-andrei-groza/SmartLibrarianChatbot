@@ -1,17 +1,8 @@
-from uuid import uuid5
 import chromadb
-from dotenv import load_dotenv
-import os
+from config import OPENAI_API_KEY, CHROMA_DIR, EMBEDDING_MODEL, BOOKS_FILE
 from openai import OpenAI
 import uuid
 
-
-# Configuration for ChromaDB
-load_dotenv(override=True)
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-CHROMA_DIR = os.getenv("CHROMA_DIR", ".chroma_db")
-EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "text-embedding-3-small")
-BOOKS_FILE = os.getenv("BOOK_SUMMARIES_FILE", "data/book_summaries.txt")
 
 # openai and chromadb clients
 openai_client = OpenAI(api_key=OPENAI_API_KEY)
