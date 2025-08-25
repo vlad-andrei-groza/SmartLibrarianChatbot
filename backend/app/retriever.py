@@ -1,8 +1,6 @@
 import chromadb
-from config import OPENAI_API_KEY, CHROMA_DIR, EMBEDDING_MODEL
-from openai import OpenAI
+from app.config import CHROMA_DIR, EMBEDDING_MODEL, openai_client
 
-openai_client = OpenAI(api_key=OPENAI_API_KEY)
 chroma_client = chromadb.PersistentClient(path=CHROMA_DIR)
 collection = chroma_client.get_or_create_collection(name="books")
 
