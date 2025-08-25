@@ -1,5 +1,5 @@
 import json
-from app.config import openai_client, OPENAI_MODEL
+from app.config import openai_client, OPENAI_MODEL, MODEL_MODERATION
 from app.retriever import search_by_context
 from app.tools.book_summaries_tool import SYSTEM_PROMPT, TOOLS, get_summary_by_title
 from pydantic import BaseModel, Field
@@ -28,13 +28,29 @@ class ChatResponse(BaseModel):
 router = APIRouter(prefix="/chat", tags=["chat"])
 
 
-@router.post("/", response_model=ChatResponse)
+def moderation_check(text: str):
+    try:
+        result = openai_client.moderations.create(
+            model=MODEL_MODERATION,
+            input=text
+        )
+        print("Moderation result:", result.results[0].flagged)
+        return bool(result.results and result.results[0].flagged)
+    except Exception:
+        print("Moderation failed")
+        return False
+
+
+@router.post("", response_model=ChatResponse)
 def chat(request: ChatRequest):
     user_message = request.message.strip()
 
+    if moderation_check(user_message):
+        raise HTTPException(status_code=400, detail="Your message appears to contain inappropriate language. Please rephrase.")
+
     candidates = search_by_context(user_message, k=request.k)
     if not candidates:
-        return HTTPException(status_code=404, detail="No candidates found for your request.")
+        raise HTTPException(status_code=404, detail="No candidates found for your request.")
 
     docs = "\n\n".join([f"### {c['title']}\n{c['snippet']}" for c in candidates])
     messages = [
