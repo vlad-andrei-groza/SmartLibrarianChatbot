@@ -34,7 +34,6 @@ def moderation_check(text: str):
             model=MODEL_MODERATION,
             input=text
         )
-        print("Moderation result:", result.results[0].flagged)
         return bool(result.results and result.results[0].flagged)
     except Exception:
         print("Moderation failed")
