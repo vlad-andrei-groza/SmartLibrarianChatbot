@@ -1,0 +1,112 @@
+book_summaries_dict = {
+    "1984": (
+        "A dystopian society is ruled by constant surveillance and ruthless propaganda. "
+        "Winston Smith secretly rebels, seeking truth in a world where independent thought is a crime. "
+        "His struggle reveals the power and danger of ideas."
+    ),
+    "The Hobbit": (
+        "Bilbo Baggins, a comfort-loving hobbit, is drawn into an epic quest to reclaim a treasure guarded by the dragon Smaug. "
+        "Along the way, he faces trolls, goblins, and unexpected allies. "
+        "The journey awakens courage he never knew he had. "
+        "It’s an adventure about bravery, loyalty, and finding one’s place."
+    ),
+    "The Fellowship of the Ring": (
+        "A humble hobbit inherits a powerful and dangerous ring. "
+        "Joined by companions from across Middle-earth, he must journey toward its destruction. "
+        "Their unity is tested by the lure of power and the shadow of war. "
+        "It’s about fellowship, courage, and the pull between power and responsibility."
+    ),
+    "Dune": (
+        "Paul Atreides arrives on the desert planet Arrakis, where political intrigue and prophecy entwine. "
+        "As rival factions battle over the planet’s precious spice, he must embrace a destiny that could save or doom worlds."
+    ),
+    "The Name of the Wind": (
+        "Kvothe, an innkeeper with a legendary past, recounts his journey from gifted child to infamous figure. "
+        "His tale spans loss, survival, music, and the pursuit of hidden truths."
+    ),
+    "The Catcher in the Rye": (
+        "Holden Caulfield wanders New York after leaving prep school, wrestling with grief, alienation, and his distaste for adult hypocrisy. "
+        "Through his sharp, cynical voice, he reveals a deep longing for innocence. "
+        "This is a novel about alienation, innocence, and the struggle to grow up."
+    ),
+    "To Kill a Mockingbird": (
+        "In a small Southern town, young Scout Finch witnesses her father defend an innocent Black man against false charges. "
+        "Through her eyes, justice, compassion, and prejudice collide."
+    ),
+    "The Book Thief": (
+        "In Nazi Germany, Liesel Meminger steals books to make sense of a violent world. "
+        "With her foster family, she discovers friendship, love, and the power of words to sustain hope. "
+        "This is a story about courage, mortality, and the saving power of stories."
+    ),
+    "All Quiet on the Western Front": (
+        "Paul Bäumer and his classmates enlist in the German army during World War I. "
+        "They face the unrelenting horrors of trench warfare, losing not only friends but their own innocence."
+    ),
+    "The Old Man and the Sea": (
+        "Santiago, an aging fisherman, ventures far into the Gulf Stream to catch a giant marlin. "
+        "The battle of endurance between man and nature becomes a quiet test of dignity."
+    ),
+    "The Alchemist": (
+        "A young shepherd follows a recurring dream in search of treasure. "
+        "Guided by omens and encounters, his journey becomes one of self-discovery as much as pursuit of gold."
+    ),
+    "Brave New World": (
+        "In a future where happiness is engineered and individuality suppressed, a man raised outside the system challenges its ideals. "
+        "His arrival disrupts a world that has forgotten freedom. "
+        "This is a cautionary story about conformity, technology, and free will."
+    ),
+    "The Road": (
+        "A father and son travel through a post-apocalyptic wasteland. "
+        "Facing hunger, danger, and ash-filled skies, they cling to each other and the hope of finding safety."
+    ),
+    "The Little Prince": (
+        "A stranded pilot meets a mysterious boy from another planet. "
+        "Through their conversations, he learns about love, loss, and seeing the world with childlike wonder. "
+        "This is a gentle fable about friendship, wonder, and seeing with the heart."
+    ),
+    "The Kite Runner": (
+        "Amir and Hassan’s childhood friendship in Kabul is shattered by betrayal. "
+        "Years later, amid war and exile, Amir seeks redemption for past mistakes. "
+        "It’s a story about friendship, guilt, and the difficult path to forgiveness."
+    ),
+    "The Pillars of the Earth": (
+        "In medieval England, the construction of a cathedral draws together nobles, builders, and priests. "
+        "Ambition, love, and revenge shape their intertwined lives over decades."
+    ),
+    "The Three-Body Problem": (
+        "A secret scientific project contacts an alien civilization on the brink of destruction. "
+        "The resulting chain of events changes humanity’s place in the universe."
+    ),
+    "The Night Circus": (
+        "A magical circus appears without warning, filled with breathtaking wonders. "
+        "Unbeknownst to visitors, it is the stage for a duel between two young magicians whose fates are bound together."
+    ),
+    "Norse Mythology": (
+        "From the creation of the world to Ragnarok, the gods of Asgard face triumphs, tricks, and tragedies. "
+        "Loki schemes, Thor blunders, and Odin seeks wisdom at any cost."
+    ),
+    "The Silence of the Lambs": (
+        "FBI trainee Clarice Starling seeks help from imprisoned genius Dr. Hannibal Lecter to catch a serial killer. "
+        "Their conversations blur the line between hunter and hunted. "
+        "This is a psychological thriller about manipulation, fear, and insight."
+    ),
+    "Pachinko": (
+        "A Korean family in Japan endures decades of discrimination, poverty, and political change. "
+        "Through generations, they hold fast to their identity and dignity."
+    ),
+    "Circe": (
+        "Banished to a lonely island, the witch-goddess Circe hones her craft. "
+        "From the halls of Olympus to mortal shores, she learns to shape her own fate. "
+        "This is a mythic tale about transformation, independence, and love."
+    ),
+    "The Martian": (
+        "After a dust storm strands him on Mars, astronaut Mark Watney must survive with limited supplies. "
+        "His engineering skills and stubborn optimism become his lifeline. "
+        "It’s an adventure about ingenuity, isolation, and the will to live."
+    ),
+    "Station Eleven": (
+        "A pandemic shatters civilization, leaving scattered survivors. "
+        "A traveling theater troupe keeps art alive, even as memories of the old world haunt them."
+    ),
+}
+
