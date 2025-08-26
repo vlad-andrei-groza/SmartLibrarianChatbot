@@ -1,7 +1,7 @@
 import type { ChatRequest, ChatResponse } from "../utils/types";
 
 
-const API_BASE = import.meta.env.CHAT_API_BASE || "http://localhost:8008";
+const API_BASE = import.meta.env.VITE_CHAT_API_BASE;
 
 export async function sendChatMessage(request: ChatRequest): Promise<ChatResponse> {
     const response = await fetch(`${API_BASE}/chat`, {

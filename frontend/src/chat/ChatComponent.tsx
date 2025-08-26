@@ -1,81 +1,100 @@
-import { useState } from "react";
-import type { ChatResponse } from "../utils/types";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { sendChatMessage } from "./api";
+import type { ChatResponse } from "../utils/types";
+import "./chat_styles.css";
 
-function RecommendationView({ data }: { data: ChatResponse }) {
-  if (data.recommendation === "Unknown") {
+type ChatTurn =
+    | { id: string; role: "user"; text: string }
+    | { id: string; role: "assistant"; data: ChatResponse };
+
+function AssistantMessage({ data }: { data: ChatResponse }) {
+    const { recommendation, summary, reason } = data;
+    if (recommendation === "Unknown") {
+        return (
+            <div className="assistant-bubble">
+                <div className="assistant-reason">{reason}</div>
+            </div>
+        );
+    }
     return (
-      <div style={{ backgroundColor: "#222222ff", border: "1px solid #ddd", padding: 12, borderRadius: 8 }}>
-        <div style={{ whiteSpace: "pre-wrap" }}>{data.reason}</div>
-      </div>
+        <div className="assistant-bubble">
+            <div className="assistant-title">{recommendation}</div>
+            <div className="assistant-summary">{summary}</div>
+            <div className="assistant-reason">{reason}</div>
+        </div>
     );
-  }
-
-  return (
-    <div style={{ backgroundColor: "#222222ff", border: "1px solid #ddd", padding: 12, borderRadius: 8 }}>
-      <div style={{ fontWeight: 700, fontSize: 18 }}>{data.recommendation}</div>
-      <div style={{ marginTop: 8, whiteSpace: "pre-wrap" }}>{data.summary}</div>
-      <div style={{ marginTop: 12, fontStyle: "italic", color: "#c5c5c5ff" }}>
-        {data.reason}
-      </div>
-    </div>
-  );
 }
 
 export default function ChatComponent() {
-  const [input, setInput] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [resp, setResp] = useState<ChatResponse | null>(null);
+    const [input, setInput] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [turns, setTurns] = useState<ChatTurn[]>([]);
+    const bottomRef = useRef<HTMLDivElement | null>(null);
 
-  async function onSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    const message = input.trim();
-    if (!message) return;
-    setLoading(true);
-    setResp(null);
-    try {
-      const data = await sendChatMessage({ message, k: 3 });
-      setResp(data);
-    } finally {
-      setLoading(false);
+    useEffect(() => {
+        bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+    }, [turns, loading]);
+
+    const canSend = useMemo(() => input.trim().length > 2 && !loading, [input, loading]);
+
+    async function onSubmit(e: React.FormEvent) {
+        e.preventDefault();
+        const message = input.trim();
+        if (!message) return;
+
+        setTurns((t) => [...t, { id: crypto.randomUUID(), role: "user", text: message }]);
+        setInput("");
+        setLoading(true);
+
+        try {
+            const data = await sendChatMessage({ message, k: 3 });
+            setTurns((t) => [...t, { id: crypto.randomUUID(), role: "assistant", data }]);
+        } finally {
+            setLoading(false);
+        }
     }
-  }
 
-  return (
-    <div style={{ 
-        maxWidth: 720, 
-        margin: "32px auto", 
-        padding: 16, 
-        fontFamily: "system-ui, sans-serif", 
-        display: "flex", 
-        flexDirection: "column",
-        alignContent: "center",
-        }}
-    >
-      <h1 style={{ marginBottom: 8, color: "#222222ff" }}>Book Recommender 📚</h1>
-      <p style={{ marginTop: 40, color: "#555" }}>
-        Ask for a book by themes, e.g. “I want a book about magic and friendship” or “What do you recommend for someone who loves war stories?”.
-      </p>
+    return (
+        <div className="chat-shell">
+            <div className="chat-thread">
+                {turns.map((t) =>
+                    t.role === "user" ? (
+                        <div key={t.id} className="row user-row">
+                            <div className="user-bubble">{t.text}</div>
+                        </div>
+                    ) : (
+                        <div key={t.id} className="row assistant-row">
+                            <AssistantMessage data={t.data} />
+                        </div>
+                    )
+                )}
 
-      <form onSubmit={onSubmit} style={{ display: "flex", gap: 8, margin: "20px 0" }}>
-        <input
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Type your request..."
-          style={{ flex: 1, padding: 10, border: "1px solid #ccc", borderRadius: 8 }}
-        />
-        <button type="submit" disabled={loading} style={{ padding: "10px 16px" }}>
-          {loading ? "Thinking…" : "Send"}
-        </button>
-      </form>
+                {loading && (
+                    <div className="row assistant-row">
+                        <div className="assistant-bubble">Thinking…</div>
+                    </div>
+                )}
+                <div ref={bottomRef} />
+            </div>
 
-      {resp && <RecommendationView data={resp} />}
-
-      {!resp && !loading && (
-        <div style={{ marginTop: 16, color: "#666" }}>
-          Try: <em>“friendship and fantasy”</em>, <em>“war stories”</em>, <em>“post-apocalyptic hope”</em>
+            {/* Composer sits at the very bottom of the page because of flex layout */}
+            <form className="chat-composer" onSubmit={onSubmit}>
+                <input
+                    className="chat-input"
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    placeholder="Type your request"
+                    onKeyDown={(e) => {
+                        if (e.key === "Enter" && !e.shiftKey) {
+                            e.preventDefault();
+                            if (canSend) onSubmit(e);
+                        }
+                    }}
+                />
+                <button className="chat-send" type="submit" disabled={!canSend}>
+                    {loading ? "…" : "Send"}
+                </button>
+            </form>
         </div>
-      )}
-    </div>
-  );
+    );
 }
