@@ -4,7 +4,7 @@ import "./App.css"
 function App() {
   return (
     <div className="page-root">
-      <header className="site-header">
+      <header className="page-header">
         <h1 className="title">
           Book Recommender <span role="img" aria-label="books">📚</span>
         </h1>

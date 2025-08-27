@@ -12,7 +12,7 @@ function AssistantMessage({ data }: { data: ChatResponse }) {
     if (recommendation === "Unknown") {
         return (
             <div className="assistant-bubble">
-                <div className="assistant-reason">{reason}</div>
+                <div className="assistant-reason" id="only-reason">{reason}</div>
             </div>
         );
     }
@@ -55,7 +55,7 @@ export default function ChatComponent() {
     }
 
     return (
-        <div className="chat-shell">
+        <div className="chat-container">
             <div className="chat-thread">
                 {turns.map((t) =>
                     t.role === "user" ? (
