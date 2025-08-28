@@ -12,4 +12,5 @@ COLLECTION_NAME = os.getenv("COLLECTION_NAME", "books")
 BOOKS_FILE = os.getenv("BOOK_SUMMARIES_FILE", "data/book_summaries.txt")
 OPENAI_MODEL = "gpt-4o-mini"
 MODEL_MODERATION = "omni-moderation-latest"
+TTS_MODEL = "gpt-4o-mini-tts"
 openai_client = OpenAI(api_key=OPENAI_API_KEY)
