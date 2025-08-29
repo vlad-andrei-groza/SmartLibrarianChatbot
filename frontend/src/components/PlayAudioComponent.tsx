@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { fetchTTSAudio } from "../chat/api";
 import { FaStop, FaSpinner } from "react-icons/fa";
 import "./audio_button_styles.css";
+import { cacheTTS, ttsKey } from "../utils/cacheTTS";
 
 
 export default function PlayAudioButton({ text, voice = "shimmer" }: { text: string; voice?: string }) {
@@ -9,6 +10,7 @@ export default function PlayAudioButton({ text, voice = "shimmer" }: { text: str
     const [loading, setLoading] = useState(false);
     const audioRef = useRef<HTMLAudioElement | null>(null);
     const audioUrlRef = useRef<string | null>(null);
+    const currentKeyRef = useRef<string>("");
 
     async function handleClick() {
         if (playing && audioRef.current) {
@@ -20,14 +22,25 @@ export default function PlayAudioButton({ text, voice = "shimmer" }: { text: str
 
         setLoading(true);
         try {
-            const url = await fetchTTSAudio(text, voice);
+            const key = ttsKey(text, voice);
+            currentKeyRef.current = key;
+
+            // Try getting from cache
+            let url = cacheTTS.get(key);
+
+            // 2) Fetch if not cached
+            if (!url) {
+                url = await fetchTTSAudio(text, voice); // POST /chat/tts -> Blob -> ObjectURL
+                cacheTTS.set(key, url);
+            }
+            
             audioUrlRef.current = url;
             if (!audioRef.current) {
                 audioRef.current = new Audio();
                 audioRef.current.addEventListener("ended", () => setPlaying(false));
                 audioRef.current.addEventListener("pause", () => setPlaying(false));
             }
-             audioRef.current.src = url;
+            audioRef.current.src = url;
             await audioRef.current.play();
             setPlaying(true);
         } catch (error) {
@@ -54,20 +67,20 @@ export default function PlayAudioButton({ text, voice = "shimmer" }: { text: str
     return (
         <div className="audio-button-container">
             <button
-            type="button"
-            onClick={handleClick}
-            disabled={loading}
-            className="tts-button"
-            title={playing ? "Stop" : "Listen"}
-        >
-            {loading ? (
-                <FaSpinner className="icon spin" />
-            ) : playing ? (
-                <FaStop className="icon" />
-            ) : (
-                <span>🔊 Listen</span>
-            )}
-        </button>
+                type="button"
+                onClick={handleClick}
+                disabled={loading}
+                className="tts-button"
+                title={playing ? "Stop" : "Listen"}
+            >
+                {loading ? (
+                    <FaSpinner className="icon spin" />
+                ) : playing ? (
+                    <FaStop className="icon" />
+                ) : (
+                    <span>🔊 Listen</span>
+                )}
+            </button>
         </div>
     );
 }
