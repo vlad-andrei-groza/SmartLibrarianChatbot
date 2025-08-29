@@ -54,3 +54,27 @@ export async function fetchTTSAudio(text: string, voice: string): Promise<string
     const audio_url = URL.createObjectURL(blob);
     return audio_url;
 }
+
+
+export async function fetchBookCover(title: string, summary: string): Promise<string> {
+    const response = await fetch(`${API_BASE}/chat/book_cover`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ title, summary }),
+    });
+
+    if (!response.ok) {
+        let detail = `Error when fetching book cover (${response.status})`;
+        try {
+            const j = await response.json();
+            detail = j?.detail ?? detail;
+        } catch {}
+        throw new Error(detail);
+    }
+
+    const blob = await response.blob();
+    const cover_url = URL.createObjectURL(blob);
+    return cover_url;
+}
