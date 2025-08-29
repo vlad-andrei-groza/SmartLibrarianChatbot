@@ -30,3 +30,27 @@ export async function sendChatMessage(request: ChatRequest): Promise<ChatRespons
     const data = (await response.json()) as ChatResponse;
     return data;
 }
+
+
+export async function fetchTTSAudio(text: string, voice: string): Promise<string> {
+    const response = await fetch(`${API_BASE}/chat/tts`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ text, voice }),
+    });
+
+    if (!response.ok) {
+        let detail = `Error when turning text to audio (${response.status})`;
+        try {
+            const j = await response.json();
+            detail = j?.detail ?? detail;
+        } catch {}
+        throw new Error(detail);
+    }
+
+    const blob = await response.blob();
+    const audio_url = URL.createObjectURL(blob);
+    return audio_url;
+}

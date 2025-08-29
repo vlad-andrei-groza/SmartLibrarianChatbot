@@ -1,0 +1,38 @@
+.tts-button {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #333;
+    background: #f7f7f7;
+    color: #222;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.tts-button:disabled {
+    opacity: 0.6;
+    cursor: default;
+}
+
+.audio-button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.icon {
+    font-size: 18px;
+}
+
+.spin {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
+}

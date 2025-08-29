@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { sendChatMessage } from "./api";
 import type { ChatResponse } from "../utils/types";
 import "./chat_styles.css";
+import PlayAudioButton from "../components/PlayAudioComponent";
 
 type ChatTurn =
     | { id: string; role: "user"; text: string }
@@ -16,11 +17,14 @@ function AssistantMessage({ data }: { data: ChatResponse }) {
             </div>
         );
     }
+
+    const text_to_narrate = `${recommendation}\n\n${summary}\n\n${reason}`
     return (
         <div className="assistant-bubble">
             <div className="assistant-title">{recommendation}</div>
             <div className="assistant-summary">{summary}</div>
             <div className="assistant-reason">{reason}</div>
+            <PlayAudioButton text={text_to_narrate} voice="shimmer" />
         </div>
     );
 }
