@@ -1,0 +1,35 @@
+.cover-button {
+    margin-top: 10px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #333;
+    background: #f7f7f7;
+    color: #222;
+    cursor: pointer;
+}
+
+.cover-button:disabled {
+    opacity: 0.6;
+    cursor: default;
+}
+
+.cover-image {
+    display: block;
+    margin-top: 10px;
+    width: 240px;
+    height: 240px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #2a2c3a;
+}
+
+.cover-error {
+    margin-top: 8px;
+    color: #ff9aa2;
+}
+
+.cover-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

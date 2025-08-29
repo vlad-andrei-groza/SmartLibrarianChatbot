@@ -16,3 +16,4 @@ build/
 .npm/
 
 .idea
+generated_book_images/

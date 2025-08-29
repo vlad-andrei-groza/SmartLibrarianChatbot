@@ -3,6 +3,7 @@ import { sendChatMessage } from "./api";
 import type { ChatResponse } from "../utils/types";
 import "./chat_styles.css";
 import PlayAudioButton from "../components/PlayAudioComponent";
+import BookIllustration from "../components/BookIllustrationComponent";
 
 type ChatTurn =
     | { id: string; role: "user"; text: string }
@@ -25,6 +26,7 @@ function AssistantMessage({ data }: { data: ChatResponse }) {
             <div className="assistant-summary">{summary}</div>
             <div className="assistant-reason">{reason}</div>
             <PlayAudioButton text={text_to_narrate} voice="shimmer" />
+            <BookIllustration title={recommendation} summary={summary} />
         </div>
     );
 }
