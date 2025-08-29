@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.routes.search import router as search_router
 from app.routes.chat import router as chat_router
 from app.routes import text_to_speech
+from app.routes import image_generation
 
 app = FastAPI(title="Book Recommender API")
 
